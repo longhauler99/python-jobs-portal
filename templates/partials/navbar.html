@@ -1,0 +1,36 @@
+<!-- ================= HEADER ================= -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{% url 'home' %}">Pata Job</a>
+
+        <!-- Toggler for mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'jobs' %}">Jobs</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        More
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Profiles</a></li>
+                        <li><a class="dropdown-item" href="#">Contact</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Right-aligned items -->
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

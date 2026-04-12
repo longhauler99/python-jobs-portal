@@ -5,28 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}My Site{% endblock %}</title>
+    <!-- Bootstrap 5 CSS (local) -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom CSS (local) -->
     <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/jobs/">Jobs</a>
-            <a href="/profiles/">Profiles</a>
-        </nav>
-    </header>
 
-    <!-- Main content -->
+    <!-- ================= HEADER ================= -->
+    {% include "partials/navbar.html" %}
+
+    <!-- ================= MAIN CONTENT ================= -->
     <main>
         {% block content %}
-        <!-- Child templates inject their content here -->
+            <!-- Child templates inject their content here -->
         {% endblock %}
     </main>
 
-    <!-- Footer -->
+    <!-- ================= FOOTER ================= -->
     <footer>
-        <p>&copy; 2026 My Site</p>
+        <div class="row">
+            <div class="col text-center">
+                <p>&copy; 2026 Pata Job</p>
+            </div>
+        </div>
     </footer>
+    <!-- Bootstrap 5 JS (local) -->
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
