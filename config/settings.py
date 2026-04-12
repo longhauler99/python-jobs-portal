@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # project apps
-    'apps.jobs'
+    'apps.jobs',
+    'apps.accounts',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login/'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases

@@ -21,7 +21,12 @@ from django.urls import path, include
 from .views import home
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-    path('', home, name='home'),
+    path('admin/', admin.site.urls),                            # admin
+
+    path('', home, name='home'),                            # homepage
+
+    path('accounts/', include('apps.accounts.urls')),       # authentication(login/logout/reset password)
+    # path('', include('django.contrib.auth.urls')),
+
     path('', include('apps.jobs.urls')),
 ]
