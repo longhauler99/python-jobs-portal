@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Job Listings{% endblock %}
+
+{% block content %}
+    <h1>Job Listings</h1>
+    <ul>
+        {% for job in jobs %}
+            <li>{{ job.title }} - {{ job.description }}</li>
+        {% empty %}
+            <li>No jobs available.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
