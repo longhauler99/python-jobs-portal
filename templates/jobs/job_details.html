@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} - Pata Job{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Job Header -->
+    <h1 class="fw-bold">{{ job.title }}</h1>
+    <h4 class="text-muted">{{ job.company_name }}</h4>
+    <p><i class="bi bi-geo-alt"></i> {{ job.location }}</p>
+
+    <!-- Job Summary -->
+    <div class="card my-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Job Summary</h5>
+            <ul class="list-unstyled">
+                <li><strong>Employment Type:</strong> {{ job.get_employment_type_display }}</li>
+                <li><strong>Salary Range:</strong>
+                    {% if job.salary_min and job.salary_max %}
+                        {{ job.salary_min }} – {{ job.salary_max }}
+                    {% else %}
+                        Not specified
+                    {% endif %}
+                </li>
+                <li><strong>Category:</strong> {{ job.category }}</li>
+                <li><strong>Posted At:</strong> {{ job.posted_at|date:"M d, Y" }}</li>
+                <li><strong>Application Deadline:</strong>
+                    {% if job.application_deadline %}
+                        {{ job.application_deadline|date:"M d, Y" }}
+                    {% else %}
+                        Open until filled
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-4">
+        <h3>Description</h3>
+        <p>{{ job.description }}</p>
+    </div>
+
+    <!-- Requirements -->
+    {% if job.requirements %}
+    <div class="mb-4">
+        <h3>Requirements</h3>
+        <ul>
+            {% for req in job.requirements.splitlines %}
+                {% if req %}
+                    <li>{{ req }}</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Apply Button -->
+    <div class="text-center">
+        <a href="#" class="btn btn-primary btn-lg">Apply Now</a>
+    </div>
+</div>
+{% endblock %}
