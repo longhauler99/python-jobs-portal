@@ -26,3 +26,6 @@ class Job(models.Model):
     def __str__(self):
         return f"{self.title}, {self.company_name}, {self.salary_min}, {self.salary_max}, {self.employment_type}"
 
+    def salary_range(self):
+        return f"{self.salary_min:,} - {self.salary_max:,}"
+

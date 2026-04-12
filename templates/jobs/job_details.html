@@ -15,12 +15,8 @@
             <h5 class="card-title">Job Summary</h5>
             <ul class="list-unstyled">
                 <li><strong>Employment Type:</strong> {{ job.get_employment_type_display }}</li>
-                <li><strong>Salary Range:</strong>
-                    {% if job.salary_min and job.salary_max %}
-                        {{ job.salary_min }} – {{ job.salary_max }}
-                    {% else %}
-                        Not specified
-                    {% endif %}
+                <li><strong>Salary Range (Ksh):</strong>
+                    {{ job.salary_range }}
                 </li>
                 <li><strong>Category:</strong> {{ job.category }}</li>
                 <li><strong>Posted At:</strong> {{ job.posted_at|date:"M d, Y" }}</li>

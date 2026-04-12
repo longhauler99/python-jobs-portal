@@ -3,14 +3,14 @@
 {% block title %}Pata Job - Find Your Next Opportunity{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
+<!-- Hero -->
 <div class="bg-primary text-white text-center py-5">
-    <h1 class="display-4">Welcome to Pata Job</h1>
-    <p class="lead">Your gateway to career opportunities in Kenya and beyond.</p>
-    <a href="{% url 'jobs' %}" class="btn btn-light btn-lg mt-3">Browse Jobs</a>
+    <h1 class="display-4 fw-bold">Pata Job</h1>
+    <p class="lead">Connecting talent with opportunity across Kenya.</p>
+    <a href="{% url 'jobs' %}" class="btn btn-warning btn-lg mt-3">Browse Jobs</a>
 </div>
 
-<!-- Search Bar -->
+<!-- Search -->
 <div class="container my-5">
     <form class="d-flex justify-content-center">
         <input class="form-control w-50 me-2" type="search" placeholder="Search jobs..." aria-label="Search">
@@ -24,11 +24,11 @@
     <div class="row">
         {% for job in jobs|slice:":3" %}
         <div class="col-md-4 mb-3">
-            <div class="card h-100">
+            <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">{{ job.title }}</h5>
                     <p class="card-text">{{ job.description|truncatewords:20 }}</p>
-                    <a href="#" class="btn btn-outline-primary">View Details</a>
+                    <a href="#" class="btn btn-outline-primary">Apply Now</a>
                 </div>
             </div>
         </div>

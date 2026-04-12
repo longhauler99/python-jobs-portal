@@ -1,0 +1,218 @@
+[
+  {
+    "model": "jobs.job",
+    "pk": 1,
+    "fields": {
+      "title": "Software Developer",
+      "description": "Build and maintain scalable web applications using modern frameworks.",
+      "requirements": "Proficiency in Python and Django\nExperience with PostgreSQL\nStrong problem-solving skills\nAbility to work in a team",
+      "company_name": "Tech Solutions Ltd",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "80000.00",
+      "salary_max": "120000.00",
+      "category": "IT & Software",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-12T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 2,
+    "fields": {
+      "title": "Financial Analyst",
+      "description": "Analyze financial data, prepare reports, and support strategic decision-making.",
+      "requirements": "Bachelor's degree in Finance or Accounting\nStrong Excel and data analysis skills\nKnowledge of financial modeling",
+      "company_name": "Equity Bank",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "60000.00",
+      "salary_max": "90000.00",
+      "category": "Finance",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-02T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 3,
+    "fields": {
+      "title": "Nurse Practitioner",
+      "description": "Provide patient care and support in a busy healthcare environment.",
+      "requirements": "Valid nursing license\nExperience in patient care\nStrong communication skills",
+      "company_name": "Nairobi Hospital",
+      "location": "Nairobi",
+      "employment_type": "PT",
+      "salary_min": "40000.00",
+      "salary_max": "60000.00",
+      "category": "Healthcare",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-04-27T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 4,
+    "fields": {
+      "title": "Marketing Manager",
+      "description": "Lead marketing campaigns to grow brand awareness and customer engagement.",
+      "requirements": "Degree in Marketing or Business\n5+ years experience in marketing leadership\nStrong digital marketing skills",
+      "company_name": "Safaricom PLC",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "100000.00",
+      "salary_max": "150000.00",
+      "category": "Marketing",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-20T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 5,
+    "fields": {
+      "title": "Data Scientist",
+      "description": "Develop machine learning models to solve business and social challenges.",
+      "requirements": "Proficiency in Python or R\nExperience with ML frameworks (TensorFlow, Scikit-Learn)\nStrong statistical background",
+      "company_name": "IBM Research Africa",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "120000.00",
+      "salary_max": "180000.00",
+      "category": "Data Science",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-15T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 6,
+    "fields": {
+      "title": "Teacher",
+      "description": "Teach mathematics and mentor students in secondary school.",
+      "requirements": "Bachelor's degree in Education\nSubject specialization in Mathematics\nPassion for teaching and mentoring",
+      "company_name": "Green Valley Academy",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "50000.00",
+      "salary_max": "70000.00",
+      "category": "Education",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-10T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 7,
+    "fields": {
+      "title": "Civil Engineer",
+      "description": "Design and oversee road construction projects across Kenya.",
+      "requirements": "Degree in Civil Engineering\nRegistered with Engineers Board of Kenya\nExperience in project management",
+      "company_name": "Kenya Roads Authority",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "90000.00",
+      "salary_max": "130000.00",
+      "category": "Engineering",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-18T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 8,
+    "fields": {
+      "title": "Customer Service Representative",
+      "description": "Handle customer inquiries and provide support via phone and email.",
+      "requirements": "Excellent communication skills\nExperience in customer service\nAbility to multitask",
+      "company_name": "Pata Job Ltd",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "35000.00",
+      "salary_max": "50000.00",
+      "category": "Customer Service",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-04-30T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 9,
+    "fields": {
+      "title": "Graphic Designer",
+      "description": "Design marketing materials and digital assets for clients.",
+      "requirements": "Proficiency in Adobe Creative Suite\nStrong portfolio of design work\nCreativity and attention to detail",
+      "company_name": "Creative Hub Africa",
+      "location": "Nairobi",
+      "employment_type": "CT",
+      "salary_min": "40000.00",
+      "salary_max": "70000.00",
+      "category": "Design",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-05T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 10,
+    "fields": {
+      "title": "Human Resource Officer",
+      "description": "Manage recruitment, employee relations, and HR compliance.",
+      "requirements": "Degree in HR or Business Administration\nKnowledge of labor laws\nStrong interpersonal skills",
+      "company_name": "Kenya Airways",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "70000.00",
+      "salary_max": "100000.00",
+      "category": "Human Resources",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-12T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 11,
+    "fields": {
+      "title": "Sales Executive",
+      "description": "Drive sales growth through client acquisition and relationship management.",
+      "requirements": "Proven sales experience\nExcellent negotiation skills\nAbility to meet targets",
+      "company_name": "Jumia Kenya",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "50000.00",
+      "salary_max": "80000.00",
+      "category": "Sales",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-08T14:00:00",
+      "is_active": true
+    }
+  },
+  {
+    "model": "jobs.job",
+    "pk": 12,
+    "fields": {
+      "title": "Cybersecurity Specialist",
+      "description": "Protect government systems from cyber threats and ensure compliance with security standards.",
+      "requirements": "Degree in Computer Science or IT Security\nKnowledge of firewalls, intrusion detection, and encryption\nStrong analytical and problem-solving skills",
+      "company_name": "Ministry of ICT",
+      "location": "Nairobi",
+      "employment_type": "FT",
+      "salary_min": "110000.00",
+      "salary_max": "160000.00",
+      "category": "Cybersecurity",
+      "posted_at": "2026-04-12T14:00:00",
+      "application_deadline": "2026-05-25T14:00:00",
+      "is_active": true
+    }
+  }
+]
