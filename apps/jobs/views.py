@@ -1,3 +1,5 @@
+from os import name
+
 from django.shortcuts import render
 from apps.jobs.models import Job
 

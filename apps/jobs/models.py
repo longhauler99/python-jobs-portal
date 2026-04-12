@@ -18,6 +18,7 @@ class Job(models.Model):
     )
     salary_min = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     salary_max = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    is_featured = models.BooleanField(default=False)
     category = models.CharField(max_length=100)
     posted_at = models.DateTimeField(auto_now_add=True)
     application_deadline = models.DateTimeField(null=True, blank=True)
