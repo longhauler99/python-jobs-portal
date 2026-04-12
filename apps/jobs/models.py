@@ -1,8 +1,10 @@
 from django.db import models
+from django.utils.text import slugify
 
 # Create your models here.
 class Job(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, null=True, blank=True)
     description = models.TextField()
     requirements = models.TextField(blank=True)
     company_name = models.CharField(max_length=200)
@@ -25,8 +27,22 @@ class Job(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.title}, {self.company_name}, {self.salary_min}, {self.salary_max}, {self.employment_type}"
+        return f"{self.title} - {self.company_name}"
 
     def salary_range(self):
         return f"{self.salary_min:,} - {self.salary_max:,}"
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(f"{self.title}-{self.company_name}")
+            slug = base_slug
+            counter = 1
+
+            # Ensure uniqueness
+            while Job.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
+        super().save(*args, **kwargs)
