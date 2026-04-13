@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     # project apps
     'apps.jobs',
     'apps.accounts',
+    'apps.job_applications',
+
 ]
 
 MIDDLEWARE = [
@@ -128,6 +130,6 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'static_root'      # collected files for production
 
-# MEDIA_URL = '/media/'
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 

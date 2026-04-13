@@ -53,7 +53,15 @@
 
     <!-- Apply Button -->
     <div class="text-center">
-        <a href="#" class="btn btn-primary btn-lg">Apply Now</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'apply-job' job.slug %}" class="btn btn-primary">
+                Apply Now
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-primary">
+                Login to Apply
+            </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
