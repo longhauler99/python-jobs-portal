@@ -1,0 +1,65 @@
+name: jobs-portal-ci
+
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        services:
+            postgres:
+                image: postgres:16
+                env:
+                    POSTGRES_DB: jobs_db
+                    POSTGRES_USER: app_user
+                    POSTGRESS_PASSWORD: 12345678
+                ports:
+                    - 5432:5432
+                options: >-
+                    -- health-cmd="pg_isready -U app_user"
+                    -- health-interval:10s
+                    -- health-timeout=5s
+                    -- health-retries=5
+
+        env:
+            DB_NAME: jobs_db
+            DB_USER: app_user
+            DB_PASSWORD: 12345678
+            DB_HOST: localhost
+            DB_PORT: 5432
+            DJANGO_SECRET_KEY: testsecret
+            DJANGO_DEBUG: True
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: "3.13"
+
+            - name: Install dependencies
+              run: |
+                pip install -r requirements.txt
+
+            - name: Run migrations
+              run: |
+                python manage.py migrage
+
+            - name: Run Django checks
+              run: |
+                python manage.py checks
+
+            - name: Build Docker image
+              run: |
+                docker build -t jobs-portal .
+
+
+
+            
+
