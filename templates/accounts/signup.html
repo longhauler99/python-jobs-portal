@@ -8,10 +8,16 @@
       <form method="post" novalidate>
         {% csrf_token %}
 
-        <!-- Username -->
+        <!-- first_name -->
         <div class="mb-3">
-          <label for="id_username" class="form-label">Username</label>
-          <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your username" required>
+          <label for="first_name" class="form-label">First Name</label>
+          <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter your first name" required>
+        </div>
+
+        <!-- last_name -->
+        <div class="mb-3">
+          <label for="last_name" class="form-label">Last Name</label>
+          <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Enter your last name" required>
         </div>
 
         <!-- Email -->
@@ -24,6 +30,12 @@
         <div class="mb-3">
           <label for="id_password" class="form-label">Password</label>
           <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password" required>
+        </div>
+
+        <!-- Password2 -->
+        <div class="mb-3">
+          <label for="id_password2" class="form-label">Confirm Password</label>
+          <input type="password" name="password2" id="id_password2" class="form-control" placeholder="Enter your password" required>
         </div>
 
         <button type="submit" class="btn btn-success w-100">Sign Up</button>
