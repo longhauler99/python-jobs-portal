@@ -20,17 +20,17 @@ jobs:
                 ports:
                     - 5432:5432
                 options: >-
-                    -- health-cmd="pg_isready -U app_user"
-                    -- health-interval=10s
-                    -- health-timeout=5s
-                    -- health-retries=5
+                    --health-cmd="pg_isready -U app_user"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
 
         env:
             DB_NAME: jobs_db
             DB_USER: app_user
             DB_PASSWORD: 12345678
             DB_HOST: localhost
-            DB_PORT: 5432
+            # DB_PORT: 5432
             DJANGO_SECRET_KEY: testsecret
             DJANGO_DEBUG: True
 
