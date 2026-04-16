@@ -1,3 +1,115 @@
 li {
     /*color: red;*/
 }
+
+.badge {
+    font-weight: 500;
+    border-radius: 999px;
+}
+
+.card {
+    transition: all 0.2s ease;
+}
+
+.job-card {
+    transition: all 0.2s ease;
+}
+
+.job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.patajob-navbar {
+    background: linear-gradient(90deg, #0f172a, #1e293b);
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+}
+
+.patajob-navbar .navbar-brand {
+    font-size: 1.2rem;
+    letter-spacing: 0.2px;
+}
+
+.patajob-navbar .brand-icon {
+    color: #fbbf24;
+}
+
+.patajob-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    transition: color 0.2s ease;
+}
+
+.patajob-navbar .nav-link:hover,
+.patajob-navbar .nav-link.active {
+    color: #ffffff !important;
+}
+
+.patajob-navbar .nav-link.active {
+    position: relative;
+}
+
+.patajob-navbar .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    bottom: 0.2rem;
+    height: 2px;
+    background-color: #fbbf24;
+    border-radius: 999px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fbbf24;
+    color: #1f2937;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.dropdown-menu {
+    min-width: 220px;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+
+.search-card {
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.text-light-emphasis {
+    color: rgba(255,255,255,0.85);
+}
+
+.job-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}

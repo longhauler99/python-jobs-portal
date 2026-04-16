@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth import logout
 
 def signup_view(request):
     if request.method == 'POST':
@@ -40,26 +43,25 @@ def signup_view(request):
 
     return render(request, 'accounts/signup.html')
 
-from django.contrib.auth import authenticate, login
-
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=email, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('/jobs')
+            return redirect('jobs')
         else:
-            from django.contrib import messages
-            messages.error(request, "Invalid credentials")
+            messages.error(request, "Invalid email or password")
 
     return render(request, 'accounts/login.html')
 
-from django.contrib.auth import logout
-
 def logout_view(request):
-    logout(request)
-    return redirect('login')
+    if request.method == "POST":
+        logout(request)
+        messages.success(request, "Logged out successfully")
+        return redirect('login')
+
+    return redirect('home')  # prevent GET logout

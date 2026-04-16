@@ -1,24 +1,160 @@
 {% extends "base.html" %}
 
-{% block title %}Job Listings{% endblock %}
+{% block title %}Jobs{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4">Job Listings</h1>
-    <div class="row">
+
+<!-- Page header -->
+<section class="mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+            <h2 class="fw-bold mb-1">Job Opportunities</h2>
+            <p class="text-muted mb-0">Find your next career move and apply with confidence.</p>
+        </div>
+
+        <div>
+            <span class="badge bg-light text-dark border px-3 py-2">
+                {{ jobs|length }} Job{{ jobs|length|pluralize }}
+            </span>
+        </div>
+    </div>
+</section>
+
+<!-- Search / filter bar -->
+<section class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-3 p-md-4">
+        <form method="get" action="" class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label fw-semibold">Keyword</label>
+                <input
+                    type="text"
+                    name="q"
+                    class="form-control"
+                    placeholder="Job title, keyword..."
+                    value="{{ request.GET.q }}"
+                >
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Location</label>
+                <input
+                    type="text"
+                    name="location"
+                    class="form-control"
+                    placeholder="e.g. Nairobi"
+                    value="{{ request.GET.location }}"
+                >
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Category</label>
+                <input
+                    type="text"
+                    name="category"
+                    class="form-control"
+                    placeholder="Category"
+                    value="{{ request.GET.category }}"
+                >
+            </div>
+
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search me-1"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Jobs grid -->
+<section>
+    <div class="row g-4">
         {% for job in jobs %}
-            <div class="col-md-6 col-lg-4 mb-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ job.title }}</h5>
-                        <p class="card-text">{{ job.description }}</p>
-                        <a href="{% url 'job-details' job.slug %}" class="btn btn-primary">View Details</a>
+            <div class="col-md-6 col-xl-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 job-card">
+                    <div class="card-body d-flex flex-column p-4">
+
+                        <!-- Top meta -->
+                        <div class="d-flex justify-content-between align-items-start mb-3 gap-2">
+                            {% if job.category %}
+                                <span class="badge bg-primary-subtle text-primary-emphasis border">
+                                    {{ job.category }}
+                                </span>
+                            {% endif %}
+
+                            {% if job.get_employment_type_display %}
+                                <span class="badge bg-success-subtle text-success-emphasis border">
+                                    {{ job.get_employment_type_display }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Title -->
+                        <h5 class="fw-bold mb-2">{{ job.title }}</h5>
+
+                        <!-- Company / location -->
+                        <div class="mb-3">
+                            {% if job.company_name %}
+                                <p class="text-muted small mb-1">
+                                    <i class="bi bi-building me-1"></i> {{ job.company_name }}
+                                </p>
+                            {% endif %}
+
+                            {% if job.location %}
+                                <p class="text-muted small mb-1">
+                                    <i class="bi bi-geo-alt me-1"></i> {{ job.location }}
+                                </p>
+                            {% endif %}
+
+                            {% if job.posted_at %}
+                                <p class="text-muted small mb-0">
+                                    <i class="bi bi-clock me-1"></i> Posted {{ job.posted_at|date:"M d, Y" }}
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-muted small mb-3">
+                            {{ job.description|truncatewords:22 }}
+                        </p>
+
+                        <!-- Salary -->
+                        <div class="mb-4">
+                            <span class="fw-semibold">Salary:</span>
+                            <span class="text-muted">
+                                {% if job.salary_range %}
+                                    KSh {{ job.salary_range }}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <!-- Action -->
+                        <div class="mt-auto d-grid">
+                            <a href="{% url 'job-details' job.slug %}" class="btn btn-outline-primary">
+                                View Details
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </div>
+
         {% empty %}
-            <p class="text-muted">No jobs available.</p>
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body text-center py-5">
+                        <i class="bi bi-briefcase fs-1 text-muted"></i>
+                        <h5 class="mt-3 mb-2">No jobs available</h5>
+                        <p class="text-muted mb-0">
+                            Try adjusting your search or check back later for new opportunities.
+                        </p>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
     </div>
-</div>
+</section>
+
 {% endblock %}
