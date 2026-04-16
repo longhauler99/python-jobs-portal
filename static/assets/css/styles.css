@@ -5,6 +5,7 @@ li {
 .badge {
     font-weight: 500;
     border-radius: 999px;
+    letter-spacing: 0.2px;
 }
 
 .card {
@@ -61,8 +62,8 @@ li {
 }
 
 .user-avatar {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: #fbbf24;
     color: #1f2937;
@@ -112,4 +113,98 @@ li {
 .job-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* Base button feel */
+.btn {
+    border-radius: 999px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Primary button */
+.btn-primary {
+    background: #2563eb;
+    border: none;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+}
+
+/* Success (Apply buttons) */
+.btn-success {
+    background: #16a34a;
+    border: none;
+    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+}
+
+.btn-success:hover {
+    background: #15803d;
+    transform: translateY(-2px);
+}
+
+/* Warning (CTA - Get Started) */
+.btn-warning {
+    background: #fbbf24;
+    color: #1f2937;
+    border: none;
+    box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4);
+}
+
+.btn-warning:hover {
+    background: #f59e0b;
+    transform: translateY(-2px);
+}
+
+/* Outline buttons */
+.btn-outline-primary {
+    border-radius: 999px;
+    border-width: 2px;
+}
+
+.btn-outline-primary:hover {
+    transform: translateY(-2px);
+}
+
+/* Press effect */
+.btn:active {
+    transform: scale(0.97);
+    box-shadow: none;
+}
+
+:root {
+    --pj-primary: #2563eb;
+    --pj-primary-dark: #1e40af;
+    --pj-accent: #fbbf24;
+    --pj-success: #16a34a;
+    --pj-bg: #f8fafc;
+    --pj-text: #1f2937;
+}
+
+.btn-primary {
+    background: var(--pj-primary);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--pj-primary-dark);
+}
+
+.patajob-navbar {
+    background: linear-gradient(90deg, #1e40af, #2563eb);
+}
+
+.btn-warning {
+    background: var(--pj-accent);
+    color: #1f2937;
+    border: none;
+}
+
+.btn-success {
+    background: var(--pj-success);
+    border: none;
 }

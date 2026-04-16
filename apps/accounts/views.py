@@ -4,7 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth import logout
+from .decorators import unauthenticated_user
 
+@unauthenticated_user('home')
 def signup_view(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
@@ -43,6 +45,7 @@ def signup_view(request):
 
     return render(request, 'accounts/signup.html')
 
+@unauthenticated_user('home')
 def login_view(request):
     if request.method == 'POST':
         email = request.POST['email']

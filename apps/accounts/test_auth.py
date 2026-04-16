@@ -5,13 +5,13 @@ class LoginTest(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(
-            username='testuser',
+            username='olesaina@gmail.com',
             password='testpassword'
         )
 
     def test_user_can_login(self):
         response = self.client.login(
-            username='testuser',
+            username='olesaina@gmail.com',
             password='testpassword'
         )
         self.assertTrue(response)
@@ -19,7 +19,7 @@ class LoginTest(TestCase):
 
     def test_login_view(self):
         response = self.client.post('/accounts/login/', {
-            'username': 'testuser',
+            'username': 'olesaina@gmail.com',
             'password': 'testpassword'
         })
 
