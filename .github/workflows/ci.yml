@@ -1,3 +1,5 @@
+env:
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: True
 name: jobs-portal-ci
 
 on:
@@ -47,6 +49,13 @@ jobs:
               run: |
                 pip install -r requirements.txt
 
+            - name: Wait for PostgreSQL
+              run:
+                until pg_isready -h localhost - p 5432; do
+                    echo "Waiting for database..."
+                    sleep 2
+                done
+                
             - name: Run migrations
               run: |
                 python manage.py migrage
