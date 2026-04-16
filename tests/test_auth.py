@@ -14,5 +14,14 @@ class LoginTest(TestCase):
             username='testuser',
             password='testpassword'
         )
-        
         self.assertTrue(response)
+
+
+    def test_login_view(self):
+        response = self.client.post('/accounts/login/', {
+            'username': 'testuser',
+            'password': 'testpassword'
+        })
+
+        self.assertEqual(response.status_code, 302)  # redirect after login
+
