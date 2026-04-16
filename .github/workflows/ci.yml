@@ -50,12 +50,12 @@ jobs:
                 pip install -r requirements.txt
 
             - name: Wait for PostgreSQL
-              run:
+              run: |
                 until pg_isready -h localhost -p 5432; do
                     echo "Waiting for database..."
                     sleep 2
                 done
-
+                
             - name: Run migrations
               run: |
                 python manage.py migrage
