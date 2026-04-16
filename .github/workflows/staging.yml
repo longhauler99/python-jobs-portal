@@ -18,18 +18,18 @@ env: # available to all steps. Used by: django(settings.py), postgresql conn, gi
 
 jobs: # Define jobs
     build:
-        runs-on: ubuntu-latest                                      # run fresh ubuntu virtual machine
+        runs-on: ubuntu-latest                                         # run fresh ubuntu virtual machine
 
-        services:                                                   # start a postresql conatainer automatically. similar docker compose
+        services:                                                      # start a postresql conatainer automatically. similar docker compose
             postgres:
                 image: postgres:16
-                env:                                                # configure db inside container
+                env:                                                   # configure db inside container
                     POSTGRES_DB: jobs_db_staging
                     POSTGRES_USER: app_user
                     POSTGRES_PASSWORD: 12345678
                 ports:
                     - 5432:5432
-                options: >-                                         # Check if postgresql is ready
+                options: >-                                            # Check if postgresql is ready
                     --health-cmd="pg_isready -U app_user"
                     --health-interval=10s
                     --health-timeout=5s
