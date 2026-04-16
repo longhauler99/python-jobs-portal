@@ -41,7 +41,7 @@ The project includes CI/CD pipelines using GitHub Actions with staging and produ
 git clone git@github.com:your-username/python-jobs-portal.git
 cd python-jobs-portal
 
-### Create .env File
+### 2. Create .env File
 
 DB_NAME=jobsdb
 DB_USER=jobsuser
@@ -51,3 +51,20 @@ DB_PORT=5432
 
 DJANGO_SECRET_KEY=your-secret-key
 DJANGO_DEBUG=True
+
+### 3. Build and run with Docker
+
+docker compose up --build
+
+### 4. Run migrations
+
+docker compose exec web python manage.py migrate
+
+### 5. Create superuser
+
+docker compose exec web python manage.py createsuperuser
+
+### 6. Access the app
+
+Web app: http://127.0.0.1:8000
+Admin panel: http://127.0.0.1:8000/admin
