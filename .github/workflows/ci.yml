@@ -62,7 +62,7 @@ jobs:
 
             - name: Run Django checks
               run: |
-                python manage.py checks
+                python manage.py check
 
             - name: Build Docker image
               run: |
