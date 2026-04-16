@@ -1,0 +1,76 @@
+# Github actions label
+name: Dev CI/CD
+
+# Run workflow after every push
+on:
+    push:
+        branches: ["dev"]
+
+env: # available to all steps. Used by: django(settings.py), postgresql conn, github runtime
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: True
+    DB_NAME: jobs_db_dev
+    DB_USER: app_user
+    DB_PASSWORD: 12345678
+    DB_HOST: localhost
+    # DB_PORT: 5432
+    # DJANGO_SECRET_KEY: testsecret
+    DJANGO_DEBUG: True
+
+jobs: # Define jobs
+    build:
+        runs-on: ubuntu-latest                                         # run fresh ubuntu virtual machine
+
+        services:                                                      # start a postresql conatainer automatically. similar docker compose
+            postgres:
+                image: postgres:16
+                env:                                                   # configure db inside container
+                    POSTGRES_DB: jobs_db_dev
+                    POSTGRES_USER: app_user
+                    POSTGRES_PASSWORD: 12345678
+                ports:
+                    - 5432:5432
+                options: >-                                            # Check if postgresql is ready
+                    --health-cmd="pg_isready -U app_user"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4                                 # clones github repo into the runner
+            
+            - name: Setup Python                                        # install Python 3.13 in the runner
+              uses: actions/setup-python@v6
+              with:
+                python-version: "3.13"
+
+            - name: Install dependencies                                # installs Django, psycopg2 & other packages
+              run: |
+                pip install -r requirements.txt
+
+            - name: Wait for PostgreSQL                                 # Loops until db is ready
+              run: |
+                until pg_isready -h localhost -p 5432; do
+                    echo "Waiting for database..."
+                    sleep 2
+                done
+                
+            - name: Run migrations                                       # creates database tables
+              run: |
+                python manage.py migrate
+
+            - name: Run Django checks                                    # validate settings, models, configurations
+              run: |
+                python manage.py check
+
+            - name: Run tests
+              run: python manage.py test                                 # Runs app tests
+
+            - name: Build Docker image                                   # builds docker image
+              run: |
+                docker build -t jobs-portal-dev .
+
+
+
+            
+
