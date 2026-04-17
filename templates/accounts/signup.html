@@ -26,7 +26,7 @@
       <form method="post" novalidate>
         {% csrf_token %}
 
-        <!-- Name row -->
+        {% comment %} <!-- Name row -->
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label fw-semibold">First Name</label>
@@ -37,12 +37,22 @@
             <label class="form-label fw-semibold">Last Name</label>
             <input type="text" name="last_name" class="form-control" placeholder="Doe" required>
           </div>
-        </div>
+        </div> {% endcomment %}
 
         <!-- Email -->
         <div class="mb-3">
           <label class="form-label fw-semibold">Email Address</label>
           <input type="email" name="email" class="form-control" placeholder="john@example.com" required>
+        </div>
+
+        <!-- User Type -->
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Account Type</label>
+            <select name="role" class="form-select" required>
+                <option class="" value="" disabled selected>Select account type</option>
+                <option value="job_seeker">Job Seeker</option>
+                <option value="employer">Employer</option>
+            </select>
         </div>
 
         <!-- Password -->

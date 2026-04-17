@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.jobs',
     'apps.accounts',
     'apps.job_applications',
+    'apps.dashboard',
 
 ]
 
@@ -95,6 +96,7 @@ DATABASES = {
    }
 }
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

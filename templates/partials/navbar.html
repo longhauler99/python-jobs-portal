@@ -20,30 +20,70 @@
 
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item">
-                    <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}"
-                       href="{% url 'home' %}">
-                        Home
-                    </a>
-                </li>
 
-                <li class="nav-item">
-                    <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'jobs' %}active fw-semibold{% endif %}"
-                       href="{% url 'jobs' %}">
-                        Jobs
-                    </a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'jobseeker-dashboard' or request.resolver_match.url_name == 'employer-dashboard' or request.resolver_match.url_name == 'admin-dashboard' %}active fw-semibold{% endif %}"
+                           href="{% url 'dashboard' %}">
+                            Dashboard
+                        </a>
+                    </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle px-lg-3" href="#" id="navbarDropdown"
-                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        More
-                    </a>
-                    <ul class="dropdown-menu border-0 shadow rounded-3 mt-2">
-                        <li><a class="dropdown-item" href="#">Profiles</a></li>
-                        <li><a class="dropdown-item" href="#">Contact</a></li>
-                    </ul>
-                </li>
+                    {% if user.role == 'job_seeker' %}
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'jobs' %}active fw-semibold{% endif %}"
+                               href="{% url 'jobs' %}">
+                                Jobs
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if user.role == 'employer' %}
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3" href="#">
+                                Post Job
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3" href="#">
+                                My Jobs
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3" href="/admin/">
+                                Admin Panel
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle px-lg-3" href="#" id="navbarDropdown"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow rounded-3 mt-2">
+                            <li><a class="dropdown-item" href="#">Profiles</a></li>
+                            <li><a class="dropdown-item" href="#">Contact</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}"
+                           href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'jobs' %}active fw-semibold{% endif %}"
+                           href="{% url 'jobs' %}">
+                            Jobs
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
 
             <!-- Right side -->
@@ -64,7 +104,19 @@
 
                         <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 mt-2">
                             <li><a class="dropdown-item" href="#">My Profile</a></li>
-                            <li><a class="dropdown-item" href="#">My Applications</a></li>
+
+                            {% if user.role == 'job_seeker' %}
+                                <li><a class="dropdown-item" href="#">My Applications</a></li>
+                            {% endif %}
+
+                            {% if user.role == 'employer' %}
+                                <li><a class="dropdown-item" href="#">My Job Posts</a></li>
+                            {% endif %}
+
+                            {% if user.is_staff %}
+                                <li><a class="dropdown-item" href="/admin/">Admin Panel</a></li>
+                            {% endif %}
+
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}" class="px-3 py-1">

@@ -28,7 +28,8 @@ urlpatterns = [
     path('', home, name='home'),                            # homepage
 
     path('accounts/', include('apps.accounts.urls')),       # authentication(login/logout/reset password)
-    # path('', include('django.contrib.auth.urls')),
+    
+    path('dashboard/', include('apps.dashboard.urls')),
 
     path('', include('apps.jobs.urls')),
 
