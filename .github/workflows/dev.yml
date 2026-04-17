@@ -1,4 +1,4 @@
-# Github actions label
+# github actions label
 name: Dev CI/CD
 
 # Run workflow after every push
