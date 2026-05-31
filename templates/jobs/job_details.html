@@ -147,7 +147,7 @@
 
                 <div class="d-grid gap-2">
                     <!-- Check if the job deadline has passed -->
-                    {% if job.application_deadline and job.application_deadline < current_time %}
+                    {% if job.is_expired %}
                         <button class="btn btn-secondary btn-lg fw-semibold" disabled>
                             <i class="bi bi-lock-fill me-1"></i> Applications Closed
                         </button>

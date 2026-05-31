@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.utils import timezone
 
 # Create your models here.
 class Job(models.Model):
@@ -25,6 +26,12 @@ class Job(models.Model):
     posted_at = models.DateTimeField(auto_now_add=True)
     application_deadline = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
+
+    @property
+    def is_expired(self):
+        if self.application_deadline:
+            return timezone.now() > self.application_deadline
+        return False
 
     def __str__(self):
         return f"{self.title} - {self.company_name}"
