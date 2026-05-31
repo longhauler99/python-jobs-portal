@@ -4,6 +4,7 @@
     "pk": 1,
     "fields": {
       "title": "Software Developer",
+      "slug": "software-developer",
       "description": "Build and maintain scalable web applications using modern frameworks.",
       "requirements": "Proficiency in Python and Django\nExperience with PostgreSQL\nStrong problem-solving skills\nAbility to work in a team",
       "company_name": "Tech Solutions Ltd",
@@ -22,6 +23,7 @@
     "pk": 2,
     "fields": {
       "title": "Financial Analyst",
+      "slug": "financial-analyst",
       "description": "Analyze financial data, prepare reports, and support strategic decision-making.",
       "requirements": "Bachelor's degree in Finance or Accounting\nStrong Excel and data analysis skills\nKnowledge of financial modeling",
       "company_name": "Equity Bank",
@@ -40,6 +42,7 @@
     "pk": 3,
     "fields": {
       "title": "Nurse Practitioner",
+      "slug": "nurse-practitioner",
       "description": "Provide patient care and support in a busy healthcare environment.",
       "requirements": "Valid nursing license\nExperience in patient care\nStrong communication skills",
       "company_name": "Nairobi Hospital",
@@ -58,6 +61,7 @@
     "pk": 4,
     "fields": {
       "title": "Marketing Manager",
+      "slug": "marketing-manager",
       "description": "Lead marketing campaigns to grow brand awareness and customer engagement.",
       "requirements": "Degree in Marketing or Business\n5+ years experience in marketing leadership\nStrong digital marketing skills",
       "company_name": "Safaricom PLC",
@@ -76,6 +80,7 @@
     "pk": 5,
     "fields": {
       "title": "Data Scientist",
+      "slug": "data-scientist",
       "description": "Develop machine learning models to solve business and social challenges.",
       "requirements": "Proficiency in Python or R\nExperience with ML frameworks (TensorFlow, Scikit-Learn)\nStrong statistical background",
       "company_name": "IBM Research Africa",
@@ -94,6 +99,7 @@
     "pk": 6,
     "fields": {
       "title": "Teacher",
+      "slug": "teacher",
       "description": "Teach mathematics and mentor students in secondary school.",
       "requirements": "Bachelor's degree in Education\nSubject specialization in Mathematics\nPassion for teaching and mentoring",
       "company_name": "Green Valley Academy",
@@ -112,6 +118,7 @@
     "pk": 7,
     "fields": {
       "title": "Civil Engineer",
+      "slug": "civil-engineer",
       "description": "Design and oversee road construction projects across Kenya.",
       "requirements": "Degree in Civil Engineering\nRegistered with Engineers Board of Kenya\nExperience in project management",
       "company_name": "Kenya Roads Authority",
@@ -130,6 +137,7 @@
     "pk": 8,
     "fields": {
       "title": "Customer Service Representative",
+      "slug": "customer-service-representative",
       "description": "Handle customer inquiries and provide support via phone and email.",
       "requirements": "Excellent communication skills\nExperience in customer service\nAbility to multitask",
       "company_name": "Pata Job Ltd",
@@ -148,6 +156,7 @@
     "pk": 9,
     "fields": {
       "title": "Graphic Designer",
+      "slug": "graphic-designer",
       "description": "Design marketing materials and digital assets for clients.",
       "requirements": "Proficiency in Adobe Creative Suite\nStrong portfolio of design work\nCreativity and attention to detail",
       "company_name": "Creative Hub Africa",
@@ -166,6 +175,7 @@
     "pk": 10,
     "fields": {
       "title": "Human Resource Officer",
+      "slug": "human-resource-officer",
       "description": "Manage recruitment, employee relations, and HR compliance.",
       "requirements": "Degree in HR or Business Administration\nKnowledge of labor laws\nStrong interpersonal skills",
       "company_name": "Kenya Airways",
@@ -184,6 +194,7 @@
     "pk": 11,
     "fields": {
       "title": "Sales Executive",
+      "slug": "sales-executive",
       "description": "Drive sales growth through client acquisition and relationship management.",
       "requirements": "Proven sales experience\nExcellent negotiation skills\nAbility to meet targets",
       "company_name": "Jumia Kenya",
@@ -202,6 +213,7 @@
     "pk": 12,
     "fields": {
       "title": "Cybersecurity Specialist",
+      "slug": "cybersecurity-specialist",
       "description": "Protect government systems from cyber threats and ensure compliance with security standards.",
       "requirements": "Degree in Computer Science or IT Security\nKnowledge of firewalls, intrusion detection, and encryption\nStrong analytical and problem-solving skills",
       "company_name": "Ministry of ICT",

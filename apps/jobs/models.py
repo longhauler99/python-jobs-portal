@@ -34,12 +34,12 @@ class Job(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(f"{self.title}-{self.company_name}")
+            base_slug = slugify(self.title)
             slug = base_slug
             counter = 1
 
             # Ensure uniqueness
-            while Job.objects.filter(slug=slug).exists():
+            while Job.objects.filter(slug=slug).exclude(pk=self.pk).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
 

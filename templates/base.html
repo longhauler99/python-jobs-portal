@@ -1,36 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}My Site{% endblock %}</title>
-    <!-- Bootstrap 5 CSS (local) -->
-    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
-    <!-- Custom CSS (local) -->
-    <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet">
-</head>
-<body>
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Pata Job{% endblock %}</title>
 
-    <!-- ================= HEADER ================= -->
-    {% include "partials/navbar.html" %}
+        <!-- Bootstrap 5 CSS -->
+        <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
 
-    <!-- ================= MAIN CONTENT ================= -->
-    <main>
-        {% block content %}
-            <!-- Child templates inject their content here -->
-        {% endblock %}
-    </main>
+        <!-- Bootstrap Icons -->
+        <link href="{% static 'assets/icons/bootstrap-icons.min.css' %}" rel="stylesheet">
 
-    <!-- ================= FOOTER ================= -->
-    <footer>
-        <div class="row">
-            <div class="col text-center">
-                <p>&copy; 2026 Pata Job</p>
+        <!-- Custom CSS -->
+        <link href="{% static 'assets/css/styles.css' %}" rel="stylesheet">
+    </head>
+    <body class="d-flex flex-column min-vh-100 bg-light">
+
+        <!-- ================= HEADER ================= -->
+        {% include "partials/navbar.html" %}
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <main class="flex-grow-1 py-4">
+            <div class="container-fluid">
+
+                <!-- Toast Container -->
+                <div class="position-fixed top-0 end-0 p-3 mt-5" style="z-index: 1100">
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="toast align-items-center text-bg-{{ message.tags }} border-0 mb-2"
+                                role="alert"
+                                aria-live="assertive"
+                                aria-atomic="true"
+                                data-bs-delay="3000">
+
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        {{ message }}
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                            data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {% block content %}
+                {% endblock %}
             </div>
-        </div>
-    </footer>
-    <!-- Bootstrap 5 JS (local) -->
-    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
-</body>
+        </main>
+
+        <!-- ================= FOOTER ================= -->
+        <footer class="bg-white border-top py-3 mt-auto shadow-sm">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                        <small class="text-muted">&copy; 2026 Pata Job. All rights reserved.</small>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <small class="text-muted">Built with Django & Bootstrap 5</small>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Bootstrap 5 JS -->
+        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const toastElList = [].slice.call(document.querySelectorAll('.toast'))
+                toastElList.forEach(function (toastEl) {
+                    const toast = new bootstrap.Toast(toastEl)
+                    toast.show()
+                })
+            });
+        </script>
+        {% block scripts %}{% endblock %}
+    </body>
 </html>

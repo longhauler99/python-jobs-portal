@@ -1,29 +1,66 @@
 {% extends "base.html" %}
+
+{% block title %}Apply - {{ job.title }}{% endblock %}
+
 {% block content %}
-<div class="container my-5" style="max-width: 600px;">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h2 class="card-title text-center mb-4">Apply for {{ job.title }}</h2>
 
-      <form method="post" enctype="multipart/form-data" novalidate>
-        {% csrf_token %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
 
-        <!-- Cover Letter -->
-        <div class="mb-3">
-          <label for="id_cover_letter" class="form-label">Cover Letter</label>
-          <textarea name="cover_letter" id="id_cover_letter" class="form-control" rows="5" placeholder="Write your cover letter here..." required></textarea>
+  <div style="width: 100%; max-width: 600px;">
+    <div class="card border-0 shadow-lg rounded-4">
+      <div class="card-body p-4">
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+          <h3 class="fw-bold mb-1">Apply for</h3>
+          <p class="text-muted mb-0">{{ job.title }}</p>
         </div>
 
-        <!-- Resume Upload -->
-        <div class="mb-3">
-          <label for="id_resume" class="form-label">Upload Resume</label>
-          <input type="file" name="resume" id="id_resume" class="form-control" required>
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          <!-- Cover Letter -->
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Cover Letter</label>
+            <textarea 
+              name="cover_letter"
+              class="form-control"
+              rows="5"
+              placeholder="Introduce yourself and explain why you're a good fit..."
+              required
+            ></textarea>
+            <div class="form-text">Keep it concise and relevant</div>
+          </div>
+
+          <!-- Resume Upload -->
+          <div class="mb-4">
+            <label class="form-label fw-semibold">Upload Resume</label>
+            <input 
+              type="file"
+              name="resume"
+              class="form-control"
+              required
+            >
+            <div class="form-text">PDF preferred (max 5MB)</div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+            <i class="bi bi-send me-1"></i> Submit Application
+          </button>
+        </form>
+
+        <!-- Back link -->
+        <div class="text-center mt-3">
+          <a href="{% url 'job-details' job.slug %}" class="small text-decoration-none">
+            <i class="bi bi-arrow-left me-1"></i> Back to Job Details
+          </a>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-success w-100">Submit Application</button>
-      </form>
+      </div>
     </div>
   </div>
+
 </div>
+
 {% endblock %}

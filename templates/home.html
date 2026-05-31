@@ -3,59 +3,163 @@
 {% block title %}Pata Job - Find Your Next Opportunity{% endblock %}
 
 {% block content %}
-<!-- Hero -->
-<div class="bg-primary text-white text-center py-5">
-    <h1 class="display-4 fw-bold">Pata Job</h1>
-    <p class="lead">Connecting talent with opportunity across Kenya.</p>
-    <a href="{% url 'jobs' %}" class="btn btn-warning btn-lg mt-3">Browse Jobs</a>
-</div>
 
-<!-- Search -->
-<div class="container my-5">
-    <form class="d-flex justify-content-center">
-        <input class="form-control w-50 me-2" type="search" placeholder="Search jobs..." aria-label="Search">
-        <button class="btn btn-primary" type="submit">Search</button>
-    </form>
-</div>
+<section class="hero-section rounded-4 p-5 mb-5 shadow-sm">
+
+    <div class="row align-items-center g-4">
+
+        <!-- LEFT -->
+        <div class="col-lg-7">
+
+            <h1 class="display-5 fw-bold mb-3">
+                Find Your Next Opportunity in Kenya
+            </h1>
+
+            <p class="lead text-white mb-4">
+                Discover jobs, grow your career, and connect with top employers — all in one place.
+            </p>
+
+            <!-- CTA -->
+            <div class="d-flex flex-wrap gap-3">
+                <a href="{% url 'jobs' %}" class="btn btn-warning btn-lg px-4 fw-semibold">
+                    <i class="bi bi-briefcase me-1"></i> Browse Jobs
+                </a>
+
+                <a href="{% url 'signup' %}" class="btn btn-outline-light btn-lg px-4">
+                    Get Started
+                </a>
+            </div>
+
+            <!-- Trust indicators -->
+            <div class="d-flex flex-wrap gap-4 mt-4 small text-white">
+                <span><i class="bi bi-check-circle me-1"></i> 100+ Jobs</span>
+                <span><i class="bi bi-check-circle me-1"></i> Verified Employers</span>
+                <span><i class="bi bi-check-circle me-1"></i> Fast Applications</span>
+            </div>
+
+        </div>
+
+        <!-- RIGHT (Search Card) -->
+        <div class="col-lg-5">
+            <div class="search-card p-4">
+
+                <h5 class="fw-bold mb-3">Quick Search</h5>
+
+                <form method="get" action="{% url 'jobs' %}">
+
+                    <div class="mb-3">
+                        <input
+                            type="search"
+                            name="q"
+                            class="form-control form-control-lg"
+                            placeholder="e.g. Software Developer"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <input
+                            type="text"
+                            name="location"
+                            class="form-control"
+                            placeholder="Location (optional)"
+                        >
+                    </div>
+
+                    <button class="btn btn-primary w-100 py-2 fw-semibold" type="submit">
+                        <i class="bi bi-search me-1"></i> Search Jobs
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</section>
 
 <!-- Featured Jobs -->
-<div class="container my-5">
-    <h2 class="mb-4">Featured Jobs</h2>
-    <div class="row">
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Featured Jobs</h2>
+            <p class="text-muted mb-0">Explore some of the latest opportunities</p>
+        </div>
+        <a href="{% url 'jobs' %}" class="text-decoration-none fw-semibold">View all jobs</a>
+    </div>
+
+    <div class="row g-4">
         {% for job in featured_jobs %}
-          <div class="col-md-4 mb-3">
-            <div class="card h-100 shadow-sm">
-              <div class="card-body">
-                <h5 class="card-title">{{ job.title }}</h5>
-                <p class="card-text">{{ job.description|truncatewords:20 }}</p>
-                <p class="text-muted">
-                  Salary Range:
-                  {% if job.salary_range %}
-                    KSh {{ job.salary_range }}
-                  {% else %}
-                    Not specified
-                  {% endif %}
-                </p>
-                <a href="{% url 'job-details' job.slug %}" class="btn btn-primary">View Job</a>
-              </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 job-card">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold mb-2">{{ job.title }}</h5>
+
+                        {% if job.company_name %}
+                            <p class="text-muted small mb-1">
+                                <i class="bi bi-building me-1"></i> {{ job.company_name }}
+                            </p>
+                        {% endif %}
+
+                        {% if job.location %}
+                            <p class="text-muted small mb-2">
+                                <i class="bi bi-geo-alt me-1"></i> {{ job.location }}
+                            </p>
+                        {% endif %}
+
+                        <p class="card-text text-muted small mb-3">
+                            {{ job.description|truncatewords:20 }}
+                        </p>
+
+                        <p class="text-muted small mb-3">
+                            <strong>Salary:</strong>
+                            {% if job.salary_range %}
+                                KSh {{ job.salary_range }}
+                            {% else %}
+                                Not specified
+                            {% endif %}
+                        </p>
+
+                        <div class="mt-auto">
+                            <a href="{% url 'job-details' job.slug %}" class="btn btn-outline-primary w-100">
+                                View Job
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         {% empty %}
-          <p>No featured jobs available.</p>
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-briefcase fs-1 text-muted"></i>
+                    <h5 class="mt-3">No featured jobs available</h5>
+                    <p class="text-muted">Check back later for new openings.</p>
+                </div>
+            </div>
         {% endfor %}
-     </div>
-</div>
+    </div>
+</section>
 
 <!-- Categories -->
-<div class="bg-light py-5">
-    <div class="container">
-        <h2 class="mb-4 text-center">Explore Categories</h2>
-        <div class="row text-center">
-            <div class="col-md-3"><a href="#" class="btn btn-outline-dark w-100">IT & Software</a></div>
-            <div class="col-md-3"><a href="#" class="btn btn-outline-dark w-100">Finance</a></div>
-            <div class="col-md-3"><a href="#" class="btn btn-outline-dark w-100">Healthcare</a></div>
-            <div class="col-md-3"><a href="#" class="btn btn-outline-dark w-100">Education</a></div>
+<section class="bg-light rounded-4 py-5 px-3 px-md-4">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Explore Categories</h2>
+        <p class="text-muted mb-0">Browse opportunities by industry</p>
+    </div>
+
+    <div class="row g-3 text-center">
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-outline-dark w-100 py-3 rounded-3">IT & Software</a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-outline-dark w-100 py-3 rounded-3">Finance</a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-outline-dark w-100 py-3 rounded-3">Healthcare</a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn btn-outline-dark w-100 py-3 rounded-3">Education</a>
         </div>
     </div>
-</div>
+</section>
+
 {% endblock %}

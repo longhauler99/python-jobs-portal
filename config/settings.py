@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+import random
+import string
+from dotenv import load_dotenv
 import os
 from pathlib import Path
+
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +25,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3^@_tfx-uq8qem^^@t&a6tm$0o+2#zq)vds^!=8@kes5pi52l!'
+SECRET_KEY = os.getenv("SECRET_KEY", ''.join(random.choices(string.ascii_letters + string.digits, k=50)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.103', 'localhost', '127.0.0.1']
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+]
 
 
 # Application definition
@@ -42,6 +51,8 @@ INSTALLED_APPS = [
     'apps.jobs',
     'apps.accounts',
     'apps.job_applications',
+    'apps.dashboard',
+    'apps.profiles',
 
 ]
 
@@ -92,6 +103,7 @@ DATABASES = {
    }
 }
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

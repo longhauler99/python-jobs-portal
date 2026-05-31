@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth import get_user_model
 from apps.jobs.models import Job
+from django.conf import settings
 
-# Create your models here.
+# User = get_user_model()
 class Application(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
 
     cover_letter = models.TextField()

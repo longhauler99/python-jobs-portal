@@ -1,54 +1,147 @@
-<!-- ================= HEADER ================= -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <!-- Brand -->
-        <a class="navbar-brand" href="{% url 'home' %}">Pata Job</a>
+<nav class="navbar navbar-expand-lg navbar-dark patajob-navbar sticky-top shadow-sm">
+    <div class="container">
 
-        <!-- Toggler for mobile -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="{% url 'home' %}">
+            <i class="bi bi-briefcase-fill me-2 brand-icon"></i>
+            Pata Job
+        </a>
+
+        <!-- Mobile toggler -->
+        <button class="navbar-toggler border-0 shadow-none" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navbar links -->
+        <!-- Navbar content -->
         <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'jobs' %}">Jobs</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        More
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Profiles</a></li>
-                        <li><a class="dropdown-item" href="#">Contact</a></li>
-                    </ul>
-                </li>
-            </ul>
 
-            <!-- Right-aligned items -->
-            <ul class="navbar-nav ms-auto">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
                 {% if user.is_authenticated %}
-                    <!-- Logged in -->
                     <li class="nav-item">
-                        <a class="btn btn-outline-light ms-2" href="{% url 'logout' %}">
-                            Logout
+                        <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'jobseeker-dashboard' or request.resolver_match.url_name == 'employer-dashboard' or request.resolver_match.url_name == 'admin-dashboard' %}active fw-semibold{% endif %}"
+                           href="{% url 'dashboard' %}">
+                            Dashboard
                         </a>
                     </li>
+
+                    {% if user.role == 'job_seeker' %}
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'jobs' %}active fw-semibold{% endif %}"
+                               href="{% url 'jobs' %}">
+                                Jobs
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if user.role == 'employer' %}
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3" href="#">
+                                Post Job
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3" href="#">
+                                My Jobs
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3" href="/admin/">
+                                Admin Panel
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle px-lg-3" href="#" id="navbarDropdown"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow rounded-3 mt-2">
+                            <li><a class="dropdown-item" href="#">Profiles</a></li>
+                            <li><a class="dropdown-item" href="#">Contact</a></li>
+                        </ul>
+                    </li>
                 {% else %}
-                    <!-- Not logged in -->
                     <li class="nav-item">
-                        <a class="btn btn-primary ms-2" href="{% url 'login' %}">
+                        <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'home' %}active fw-semibold{% endif %}"
+                           href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 {% if request.resolver_match.url_name == 'jobs' %}active fw-semibold{% endif %}"
+                           href="{% url 'jobs' %}">
+                            Jobs
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <!-- Right side -->
+            <ul class="navbar-nav align-items-lg-center gap-2">
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2"
+                           href="#" id="userDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="user-avatar">
+                                {{ user.first_name|default:user.email|slice:":1"|upper }}
+                            </span>
+                            <span class="small text-light">
+                                {{ user.first_name|default:user.email }}
+                            </span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 mt-2">
+                            <li><a class="dropdown-item" href="{% url 'profile_detail' %}">My Profile</a></li>
+
+                            {% if user.role == 'job_seeker' %}
+                                <li><a class="dropdown-item" href="#">My Applications</a></li>
+                            {% endif %}
+
+                            {% if user.role == 'employer' %}
+                                <li><a class="dropdown-item" href="#">My Job Posts</a></li>
+                            {% endif %}
+
+                            {% if user.is_staff %}
+                                <li><a class="dropdown-item" href="/admin/">Admin Panel</a></li>
+                            {% endif %}
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}" class="px-3 py-1">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-light btn-sm px-3 rounded-pill" href="{% url 'login' %}">
                             Login
                         </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="btn btn-success ms-2" href="{% url 'signup' %}">
+                        <a class="btn btn-warning btn-sm px-3 rounded-pill fw-semibold" href="{% url 'signup' %}">
                             Get Started
                         </a>
                     </li>
                 {% endif %}
+
             </ul>
         </div>
     </div>

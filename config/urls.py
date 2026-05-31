@@ -28,11 +28,14 @@ urlpatterns = [
     path('', home, name='home'),                            # homepage
 
     path('accounts/', include('apps.accounts.urls')),       # authentication(login/logout/reset password)
-    # path('', include('django.contrib.auth.urls')),
+    
+    path('dashboard/', include('apps.dashboard.urls')),
 
     path('', include('apps.jobs.urls')),
 
     path('applications/', include('apps.job_applications.urls')),
+
+    path('profiles/', include('apps.profiles.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
