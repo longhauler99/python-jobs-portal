@@ -12,6 +12,10 @@ from .models import Application
 def apply_job(request, slug):
     job = get_object_or_404(Job, slug=slug)
 
+    if request.user.role != 'job_seeker':
+        messages.error(request, "Only job seekers can apply for jobs.")
+        return redirect('job-details', slug=job.slug)
+
     # prevent duplicate applications
     if Application.objects.filter(user=request.user, job=job).exists():
         messages.warning(request, "You already applied for this job.")
@@ -20,6 +24,13 @@ def apply_job(request, slug):
     if request.method == 'POST':
         cover_letter = request.POST.get('cover_letter')
         resume = request.FILES.get('resume')
+
+        if not resume and hasattr(request.user, 'candidate_profile'):
+            resume = request.user.candidate_profile.resume
+
+        if not resume:
+            messages.error(request, "Please upload a resume or add one to your profile to apply.")
+            return render(request, 'job_applications/apply.html', {'job': job})
 
         Application.objects.create(
             user=request.user,

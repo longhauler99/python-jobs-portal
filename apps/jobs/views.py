@@ -1,6 +1,7 @@
 from os import name
 from django.shortcuts import render, get_object_or_404
 from apps.jobs.models import Job
+from django.utils import timezone
 
 # Create your views here.
 def index(request):
@@ -10,4 +11,4 @@ def index(request):
 
 def job_detail(request, slug):
     job = get_object_or_404(Job, slug=slug)
-    return render(request, 'jobs/job_details.html', {'job': job})
+    return render(request, 'jobs/job_details.html', {'job': job, 'current_time': timezone.now()})

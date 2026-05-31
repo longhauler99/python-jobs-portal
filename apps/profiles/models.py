@@ -4,9 +4,6 @@ from django.conf import settings
 class CandidateProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='candidate_profile')
 
-    first_name = models.CharField(max_length=100, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
-
     id_number = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(max_length=100, blank=True)
     availability = models.BooleanField(default=True, help_text='Designates if the candidate is looking for work.')
