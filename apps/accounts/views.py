@@ -40,8 +40,14 @@ def signup_view(request):
             password=password,
         )
 
-        messages.success(request, "Account created successfully")
-        return redirect('login')
+        login(request, user)
+        messages.success(request, "Account created successfully! Let's complete your profile.")
+        # return redirect('login')
+
+        if user.role == 'job_seeker':
+            return redirect('profile_detail')
+        elif user.role == 'employer':
+            return redirect('profile_detail')
 
     return render(request, 'accounts/signup.html')
 

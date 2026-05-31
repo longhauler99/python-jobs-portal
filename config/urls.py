@@ -34,6 +34,8 @@ urlpatterns = [
     path('', include('apps.jobs.urls')),
 
     path('applications/', include('apps.job_applications.urls')),
+
+    path('profiles/', include('apps.profiles.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

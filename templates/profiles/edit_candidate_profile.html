@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh; padding: 15px 0;">
+
+  <!-- Widened box container significantly to accommodate wide 3-column rows easily -->
+  <div style="width: 100%; max-width: 850px;">
+    <div class="card border-0 shadow-lg rounded-4">
+      <div class="card-body p-4">
+
+        <!-- Minimalist Compact Header -->
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+          <div>
+            <h4 class="fw-bold mb-0">Edit Profile</h4>
+            <p class="text-muted small mb-0">Update your Pata Jobs account credentials</p>
+          </div>
+          <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Exit
+          </a>
+        </div>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} small mb-3" role="alert">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          <!-- HORIZONTAL ROW 1: Names & Identity (3 Fields Side-by-Side) -->
+          <div class="row g-2 mb-3">
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" name="first_name" class="form-control" id="fName" placeholder="First Name" value="{{ request.user.first_name }}" required>
+                <label for="fName">First Name</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" name="last_name" class="form-control" id="lName" placeholder="Last Name" value="{{ request.user.last_name }}" required>
+                <label for="lName">Last Name</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" name="id_number" class="form-control" id="idNum" placeholder="National ID" value="{{ request.user.candidate_profile.id_number }}">
+                <label for="idNum">National ID Number</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- HORIZONTAL ROW 2: Contact, Experience & Search Status (3 Fields Side-by-Side) -->
+          <div class="row g-2 mb-3 align-items-center">
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" name="phone_number" class="form-control" id="phone" placeholder="Phone" value="{{ request.user.candidate_profile.phone_number }}">
+                <label for="phone">Phone Number</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="number" name="experience" class="form-control" id="exp" placeholder="Experience" value="{{ request.user.candidate_profile.experience }}">
+                <label for="exp">Years of Experience</label>
+              </div>
+            </div>
+            <div class="col-md-4 ps-md-4">
+              <div class="form-check form-switch mb-0">
+                <input type="checkbox" name="availability" class="form-check-input" id="avail" {% if request.user.candidate_profile.availability %}checked{% endif %}>
+                <label class="form-check-label small fw-semibold text-secondary" for="avail">Actively seeking work</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- HORIZONTAL ROW 3: Core Competencies Skills (Wide input) -->
+          <div class="form-floating mb-3">
+            <input type="text" name="skills" class="form-control" id="skillsInput" placeholder="Skills" value="{{ request.user.candidate_profile.skills }}">
+            <label for="skillsInput">Key Skills (Separate items using commas)</label>
+          </div>
+
+          <!-- HORIZONTAL ROW 4: Files and Submission Buttons combined -->
+          <div class="row g-2 align-items-center pt-2">
+            <div class="col-md-7">
+              <div class="input-group input-group-lg">
+                <label class="input-group-text bg-light border-end-0 text-muted small fw-semibold" style="font-size: 0.85rem;">Resume CV</label>
+                <input type="file" name="resume" class="form-control border-start-0" style="font-size: 0.9rem;">
+              </div>
+
+              {% if request.user.candidate_profile.resume %}
+                <div class="mt-1 ps-1">
+                  <a href="{{ request.user.candidate_profile.resume.url }}" target="_blank" class="text-decoration-none small fw-semibold text-success" style="font-size: 0.8rem;">
+                    <i class="bi bi-file-earmark-pdf me-1"></i>Review Current CV File
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-5 ms-auto text-end">
+              <button type="submit" class="btn btn-success btn-lg px-4 fw-semibold w-100" style="height: 48px; font-size: 1rem;">
+                <i class="bi bi-check-circle me-1"></i> Save Changes
+              </button>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

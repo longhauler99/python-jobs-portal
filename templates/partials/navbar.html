@@ -103,7 +103,7 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 mt-2">
-                            <li><a class="dropdown-item" href="#">My Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile_detail' %}">My Profile</a></li>
 
                             {% if user.role == 'job_seeker' %}
                                 <li><a class="dropdown-item" href="#">My Applications</a></li>

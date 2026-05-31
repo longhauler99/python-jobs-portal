@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - Pata Job{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <!-- Profile Header Card -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 bg-primary text-white">
+                <div class="card-body p-4 p-md-5">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                        <div>
+                            <span class="badge bg-white text-primary fw-bold text-uppercase px-3 py-2 rounded-pill mb-2">
+                                {% if request.user.role == 'job_seeker' %}
+                                    <i class="bi bi-person-badge me-1"></i> Job Seeker
+                                {% else %}
+                                    <i class="bi bi-building me-1"></i> Employer
+                                {% endif %}
+                            </span>
+                            <h1 class="fw-bold mb-1">
+                                {% if request.user.first_name or request.user.last_name %}
+                                    {{ request.user.first_name }} {{ request.user.last_name }}
+                                {% else %}
+                                    {{ request.user.email }}
+                                {% endif %}
+                            </h1>
+                            <p class="mb-0 opacity-75">
+                                <i class="bi bi-envelope me-1"></i> {{ request.user.email }}
+                            </p>
+                        </div>
+                        <div>
+                            {% if request.user.role == 'job_seeker' %}
+                                <a href="{% url 'edit_candidate_profile' %}" class="btn btn-light btn-lg fw-semibold rounded-pill text-primary px-4 shadow-sm">
+                                    <i class="bi bi-pencil-square me-1"></i> Edit Profile
+                                </a>
+                            {% else %}
+                                <a href="{% url 'edit_employer_profile' %}" class="btn btn-light btn-lg fw-semibold rounded-pill text-primary px-4 shadow-sm">
+                                    <i class="bi bi-pencil-square me-1"></i> Edit Corporate Profile
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conditional Content based on User Role -->
+            {% if request.user.role == 'job_seeker' %}
+
+                <!-- ==================== JOB SEEKER LAYOUT ==================== -->
+                <div class="row g-4">
+                    <!-- Left Sidebar Details -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3 text-dark">Contact & Info</h5>
+
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Phone Number</small>
+                                    <span class="fw-semibold text-dark">{{ request.user.candidate_profile.phone_number|default:"Not provided" }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">National ID Number</small>
+                                    <span class="fw-semibold text-dark">{{ request.user.candidate_profile.id_number|default:"Not provided" }}</span>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted d-block">Experience</small>
+                                    <span class="fw-semibold text-dark">{{ request.user.candidate_profile.experience }} Year{{ request.user.candidate_profile.experience|pluralize }}</span>
+                                </div>
+                                <div class="mt-4">
+                                    {% if request.user.candidate_profile.availability %}
+                                        <div class="alert alert-success border-0 rounded-3 py-2 px-3 m-0 small d-flex align-items-center">
+                                            <i class="bi bi-circle-fill text-success blink me-2 small"></i> Actively Looking for Work
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-secondary border-0 rounded-3 py-2 px-3 m-0 small d-flex align-items-center">
+                                            <i class="bi bi-dash-circle me-2"></i> Not Open to Offers
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Core Profile Details -->
+                    <div class="col-md-8">
+                        <!-- Skills Card -->
+                        <div class="card border-0 shadow-sm rounded-4 mb-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-tags text-primary me-2"></i>Key Skills</h5>
+                                {% if request.user.candidate_profile.skills %}
+                                    <div class="d-flex flex-wrap gap-2">
+                                        {% for skill in request.user.candidate_profile.skills.splitlines %}
+                                            {% if skill %}
+                                                <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-medium">{{ skill.strip }}</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted mb-0 small">No skills added yet. Click edit profile to populate this area.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Resume Card -->
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-file-earmark-text text-primary me-2"></i>Curriculum Vitae</h5>
+                                {% if request.user.candidate_profile.resume %}
+                                    <div class="d-flex align-items-center justify-content-between p-3 border rounded-3 bg-light">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-file-earmark-pdf-fill text-danger fs-3 me-3"></i>
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold text-dark">Uploaded Resume</h6>
+                                                <small class="text-muted">PDF format ready for employers</small>
+                                            </div>
+                                        </div>
+                                        <a href="{{ request.user.candidate_profile.resume.url }}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            <i class="bi bi-eye me-1"></i> View Document
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted mb-0 small">No resume uploaded yet. Update your profile to upload your CV.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+
+                <!-- ==================== EMPLOYER LAYOUT ==================== -->
+                <div class="card border-0 shadow-sm rounded-4 p-2">
+                    <div class="card-body p-4">
+                        <div class="row align-items-start g-4">
+
+                            <!-- Company Logo Space -->
+                            <div class="col-md-3 text-center text-md-start">
+                                {% if request.user.employer_profile.company_logo %}
+                                    <img src="{{ request.user.employer_profile.company_logo.url }}" alt="Logo" class="img-fluid rounded-4 border p-2 shadow-sm" style="max-height: 140px; width: auto; object-fit: contain;">
+                                {% else %}
+                                    <div class="bg-light rounded-4 border d-flex flex-column align-items-center justify-content-center text-muted" style="height: 140px; width: 140px; margin: 0 auto;">
+                                        <i class="bi bi-building fs-1 opacity-50 mb-1"></i>
+                                        <small class="small px-2 text-center">No Logo</small>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Company Profile Info -->
+                            <div class="col-md-9">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <h3 class="fw-bold mb-0 text-dark">{{ request.user.employer_profile.company_name|default:"Company Profile Incomplete" }}</h3>
+                                    {% if request.user.employer_profile.is_verified %}
+                                        <span class="badge bg-success-subtle text-success border px-2 py-1 rounded-pill small"><i class="bi bi-patch-check-fill me-1"></i>Verified</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="d-flex flex-wrap gap-3 mb-4 text-muted small">
+                                    <span><i class="bi bi-briefcase me-1"></i> Industry: <strong>{{ request.user.employer_profile.industry|default:"Not set" }}</strong></span>
+                                    <span><i class="bi bi-geo-alt me-1"></i> Location: <strong>{{ request.user.employer_profile.location|default:"Not set" }}</strong></span>
+                                    {% if request.user.employer_profile.company_website %}
+                                        <span><i class="bi bi-globe me-1"></i> <a href="{{ request.user.employer_profile.company_website }}" target="_blank" class="text-decoration-none">{{ request.user.employer_profile.company_website }}</a></span>
+                                    {% endif %}
+                                </div>
+
+                                <h5 class="fw-bold mb-2 text-dark">About Company</h5>
+                                <p class="text-muted lh-lg" style="white-space: pre-line;">
+                                    {{ request.user.employer_profile.company_description|default:"No company description provided yet. Click the corporate update button above to fill out your profile metrics." }}
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Clean pulse look for active candidate toggle */
+    .blink {
+        animation: pulse-animation 2s infinite;
+    }
+    @keyframes pulse-animation {
+        0% { opacity: 1; }
+        50% { opacity: 0.4; }
+        100% { opacity: 1; }
+    }
+</style>
+{% endblock %}
