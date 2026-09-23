@@ -66,5 +66,45 @@ pipeline {
             // Always attempts cleanup, including after test failure or timeout.
             // Cleanup targets this test project, not your development containers.
         }
+
+        stage('Deploy locally') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
+
+            steps {
+                sh '''
+                    export APP_IMAGE="jobs-portal:ci-${BUILD_NUMBER}"
+
+                    docker compose \
+                      --env-file "$HOME/.config/jobs-portal/deploy.env" \
+                      -p jobs-portal-local \
+                      -f compose.deploy.yaml \
+                      up --no-build --wait --wait-timeout 180
+                '''
+
+                echo 'Application is available at http://localhost:8001'
+            }
+
+            post {
+                failure {
+                    sh '''
+                        export APP_IMAGE="jobs-portal:ci-${BUILD_NUMBER}"
+
+                        docker compose \
+                          --env-file "$HOME/.config/jobs-portal/deploy.env" \
+                          -p jobs-portal-local \
+                          -f compose.deploy.yaml \
+                          logs --tail=80 web db
+                    '''
+                }
+            }
+
+            // Deploys the same image that passed the tests.
+            // Starts PostgreSQL, then migrations, static collection and Gunicorn.
+            // Waits for the database and application health checks to pass.
+            // Keeps the deployment database and uploaded files across builds.
+            // Leaves the application running after Jenkins finishes.
+        }
     }
 }

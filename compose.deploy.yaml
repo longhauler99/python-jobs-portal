@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:?DB_NAME required}
+      POSTGRES_USER: ${DB_USER:?DB_USER required}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD required}
+    volumes:
+      - deploy_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  web:
+    image: ${APP_IMAGE:?APP_IMAGE required}
+    pull_policy: never
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Secret key required}
+      DJANGO_DEBUG: "True"
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+      DB_PORT: "5432"
+      RUN_MIGRATIONS: "1"
+      COLLECT_STATIC: "1"
+    volumes:
+      - deploy_media:/app/media
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/accounts/login/', timeout=5)"
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 60s
+
+volumes:
+  deploy_db:
+  deploy_media:
