@@ -71,6 +71,91 @@ pipeline {
             // Cleanup targets this test project, not your development containers.
         }
 
+        stage('Backup') {
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
+
+            steps {
+                sh '''
+                    set -eu
+                    umask 077
+
+                    DB_CONTAINER=$(docker ps -q \
+                      --filter label=com.docker.compose.project=jobs-portal-local \
+                      --filter label=com.docker.compose.service=db)
+
+                    WEB_CONTAINER=$(docker ps -q \
+                      --filter label=com.docker.compose.project=jobs-portal-local \
+                      --filter label=com.docker.compose.service=web)
+
+                    if [ -z "$DB_CONTAINER" ] || [ -z "$WEB_CONTAINER" ]; then
+                        echo "Backup requires the existing database and web containers to be running."
+                        exit 1
+                    fi
+
+                    BACKUP_ROOT="$HOME/backups/jobs-portal"
+                    mkdir -p "$BACKUP_ROOT"
+                    chmod 700 "$BACKUP_ROOT"
+
+                    BACKUP_NAME="before-build-${BUILD_NUMBER}-$(date +%Y%m%d-%H%M%S)"
+                    PARTIAL_DIR="$BACKUP_ROOT/$BACKUP_NAME.partial"
+                    FINAL_DIR="$BACKUP_ROOT/$BACKUP_NAME"
+
+                    mkdir "$PARTIAL_DIR"
+
+                    # Restart the web container on normal exit or script failure.
+                    resume_app() {
+                        result=$?
+                        trap - EXIT
+                        if ! docker start "$WEB_CONTAINER" >/dev/null; then
+                            echo "Could not restart the application. Manual attention required."
+                            result=1
+                        fi
+                        exit "$result"
+                    }
+
+                    trap resume_app EXIT
+                    trap 'exit 130' INT
+                    trap 'exit 143' TERM
+
+                    echo "Stopping web container for a consistent backup..."
+                    docker stop --time 60 "$WEB_CONTAINER" >/dev/null
+
+                    echo "Backing up PostgreSQL..."
+                    docker exec "$DB_CONTAINER" sh -c \
+                      'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc' \
+                      > "$PARTIAL_DIR/database.dump"
+
+                    echo "Backing up uploaded files..."
+                    docker cp "$WEB_CONTAINER":/app/media/. - \
+                      > "$PARTIAL_DIR/media.tar"
+
+                    echo "Checking that the backup archives can be read..."
+                    docker exec -i "$DB_CONTAINER" pg_restore --list \
+                      < "$PARTIAL_DIR/database.dump" > /dev/null
+
+                    tar -tf "$PARTIAL_DIR/media.tar" > /dev/null
+
+                    # Record the application image associated with this backup.
+                    docker inspect --format '{{.Config.Image}} {{.Image}}' \
+                      "$WEB_CONTAINER" > "$PARTIAL_DIR/application-image.txt"
+
+                    # Only completed backups lose the .partial suffix.
+                    mv "$PARTIAL_DIR" "$FINAL_DIR"
+
+                    echo "Backup completed: $FINAL_DIR"
+                    ls -lh "$FINAL_DIR"
+                '''
+            }
+
+            // Backs up existing data before the new deployment changes it.
+            // Briefly stops the web app so records and uploads stay consistent.
+            // Attempts to restart the app even if a backup command fails.
+            // A backup failure prevents the deployment stage from running.
+            // Keeps backups outside Git and the Jenkins workspace.
+        }
+
         stage('Deploy locally') {
             options {
                 timeout(time: 10, unit: 'MINUTES')
