@@ -5,7 +5,7 @@ services:
     build: .
     container_name: jobs-portal-web
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     depends_on:
       - db
     env_file:
@@ -14,7 +14,11 @@ services:
       RUN_MIGRATIONS: "1"
       COLLECT_STATIC: "1"
     volumes:
-      - .:/app
+#      - .:/app
+      - /home/timothy-saina/Documents/dev/python-jobs-portal/static_root:/app/static_root
+      - /home/timothy-saina/Documents/dev/python-jobs-portal/media:/app/media
+#      - static_vol:/app/static_root
+#      - media_vol:/app/media
 
   db:
     image: postgres:16

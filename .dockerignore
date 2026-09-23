@@ -5,3 +5,10 @@ __pycache__
 .env
 venv/
 .git/
+.git.env
+.env.*
+.venv/
+__pycache__/
+db.sqlite3
+media/
+static_root/

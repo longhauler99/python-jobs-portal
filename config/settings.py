@@ -30,7 +30,8 @@ SECRET_KEY = os.getenv("SECRET_KEY", ''.join(random.choices(string.ascii_letters
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.103', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['192.168.0.103', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1', 'jobs.local']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
