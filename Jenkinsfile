@@ -73,42 +73,77 @@ pipeline {
 
         stage('Deploy locally') {
             options {
-                timeout(time: 5, unit: 'MINUTES')
+                timeout(time: 10, unit: 'MINUTES')
             }
 
             steps {
                 sh '''
+                    set -eu
+
                     export APP_IMAGE="jobs-portal:ci-${BUILD_NUMBER}"
 
-                    docker compose \
-                      --env-file "$HOME/.config/jobs-portal/deploy.env" \
-                      -p jobs-portal-local \
-                      -f compose.deploy.yaml \
-                      up --no-build --wait --wait-timeout 180
-                '''
-
-                echo 'Application is available at http://localhost:8001'
-            }
-
-            post {
-                failure {
-                    sh '''
-                        export APP_IMAGE="jobs-portal:ci-${BUILD_NUMBER}"
-
+                    # Use the same deployment configuration for every command.
+                    compose_deploy() {
                         docker compose \
                           --env-file "$HOME/.config/jobs-portal/deploy.env" \
                           -p jobs-portal-local \
                           -f compose.deploy.yaml \
-                          logs --tail=80 web db
-                    '''
-                }
+                          "$@"
+                    }
+
+                    # Find the currently running application container.
+                    CURRENT_CONTAINER=$(docker ps -q \
+                      --filter label=com.docker.compose.project=jobs-portal-local \
+                      --filter label=com.docker.compose.service=web)
+
+                    PREVIOUS_IMAGE=""
+
+                    if [ -n "$CURRENT_CONTAINER" ]; then
+                        # Record the exact image ID, even if its tag later changes.
+                        PREVIOUS_IMAGE=$(docker inspect \
+                          --format '{{.Image}}' "$CURRENT_CONTAINER")
+
+                        CURRENT_TAG=$(docker inspect \
+                          --format '{{.Config.Image}}' "$CURRENT_CONTAINER")
+
+                        echo "Current application: $CURRENT_TAG"
+                    fi
+
+                    echo "Deploying: $APP_IMAGE"
+
+                    if compose_deploy up --no-build --wait --wait-timeout 180; then
+                        echo "Deployment passed its health checks."
+                    else
+                        echo "Deployment failed. Collecting logs..."
+                        compose_deploy logs --tail=80 web db || true
+
+                        if [ -n "$PREVIOUS_IMAGE" ]; then
+                            echo "Restoring previous image: $CURRENT_TAG"
+                            export APP_IMAGE="$PREVIOUS_IMAGE"
+
+                            if compose_deploy up --no-build --wait --wait-timeout 180; then
+                                echo "Rollback succeeded. Previous version is healthy."
+                            else
+                                echo "ROLLBACK FAILED. Manual attention is required."
+                                compose_deploy logs --tail=80 web db || true
+                            fi
+                        else
+                            echo "No previous running application was found."
+                            echo "Automatic rollback is unavailable."
+                        fi
+
+                        # Keep Jenkins red: the attempted deployment failed,
+                        # even if the previous application was restored.
+                        exit 1
+                    fi
+                '''
             }
 
-            // Deploys the same image that passed the tests.
-            // Starts PostgreSQL, then migrations, static collection and Gunicorn.
-            // Waits for the database and application health checks to pass.
-            // Keeps the deployment database and uploaded files across builds.
-            // Leaves the application running after Jenkins finishes.
+            // Records the running image before attempting the new deployment.
+            // Restores it if deployment fails or health checks time out.
+            // Checks that the restored application becomes healthy.
+            // Preserves database and media volumes; does not reverse migrations.
+            // Recovery requires the Jenkins agent and Docker to remain available.
         }
     }
 }
