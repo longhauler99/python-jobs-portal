@@ -1,0 +1,30 @@
+services:
+  test-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: jobs_ci
+      POSTGRES_USER: jobs_ci
+      POSTGRES_PASSWORD: ci-only-password
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jobs_ci -d jobs_ci"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  tests:
+    image: ${TEST_IMAGE:?TEST_IMAGE must be set}
+    depends_on:
+      test-db:
+        condition: service_healthy
+    environment:
+      DJANGO_SECRET_KEY: "ci-only-dummy-key-not-for-production"
+      DJANGO_DEBUG: "False"
+      DB_NAME: jobs_ci
+      DB_USER: jobs_ci
+      DB_PASSWORD: ci-only-password
+      DB_HOST: test-db
+      DB_PORT: "5432"
+    entrypoint: ["python", "manage.py"]
+    command: ["test", "apps.accounts.test_auth", "--noinput", "--verbosity", "2"]

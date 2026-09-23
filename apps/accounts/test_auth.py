@@ -1,97 +1,101 @@
-# from django.test import TestCase
-# from django.contrib.auth.models import User
-# from django.urls import reverse
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import reverse
+
+User = get_user_model()
 
 
-# class AuthTests(TestCase):
+class AuthTests(TestCase):
+    def setUp(self):
+        self.password = "Test-password-123!"
+        self.user = User.objects.create_user(
+            email="existing@example.com",
+            role="job_seeker",
+            password=self.password,
+        )
 
-#     def setUp(self):
-#         self.email = "olesaina@gmail.com"
-#         self.password = "testpassword123"
+    def test_login_success(self):
+        response = self.client.post(reverse("login"), {
+            "email": self.user.email,
+            "password": self.password,
+        })
 
-#         self.user = User.objects.create_user(
-#             username=self.email,   # email used as username
-#             email=self.email,
-#             password=self.password
-#         )
+        self.assertRedirects(
+            response, reverse("dashboard"),
+            fetch_redirect_response=False,
+        )
+        self.assertEqual(
+            self.client.session.get("_auth_user_id"),
+            str(self.user.pk),
+        )
 
-#     # ======================
-#     # LOGIN TESTS
-#     # ======================
+    def test_login_invalid_password(self):
+        response = self.client.post(reverse("login"), {
+            "email": self.user.email,
+            "password": "wrong-password",
+        })
 
-#     def test_user_can_login_with_client(self):
-#         login = self.client.login(
-#             username=self.email,
-#             password=self.password
-#         )
-#         self.assertTrue(login)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("_auth_user_id", self.client.session)
 
-#     def test_login_view_success(self):
-#         response = self.client.post(reverse('login'), {
-#             'email': self.email,
-#             'password': self.password
-#         })
+    def test_signup_success(self):
+        response = self.client.post(reverse("signup"), {
+            "email": "new@example.com",
+            "role": "job_seeker",
+            "password": self.password,
+            "password2": self.password,
+        })
 
-#         self.assertRedirects(response, reverse('jobs'))
+        self.assertRedirects(
+            response, reverse("profile_detail"),
+            fetch_redirect_response=False,
+        )
+        user = User.objects.get(email="new@example.com")
+        self.assertEqual(user.role, "job_seeker")
+        self.assertTrue(user.check_password(self.password))
+        self.assertEqual(
+            self.client.session.get("_auth_user_id"), str(user.pk)
+        )
 
-#     def test_login_view_invalid_credentials(self):
-#         response = self.client.post(reverse('login'), {
-#             'email': self.email,
-#             'password': 'wrongpassword'
-#         })
+    def test_signup_password_mismatch(self):
+        response = self.client.post(reverse("signup"), {
+            "email": "mismatch@example.com",
+            "role": "job_seeker",
+            "password": self.password,
+            "password2": "different-password",
+        })
 
-#         self.assertEqual(response.status_code, 200)
-#         self.assertContains(response, "Invalid")
+        self.assertRedirects(
+            response, reverse("signup"),
+            fetch_redirect_response=False,
+        )
+        self.assertFalse(
+            User.objects.filter(email="mismatch@example.com").exists()
+        )
 
-#     def test_logged_in_user_cannot_access_login(self):
-#         self.client.login(username=self.email, password=self.password)
+    def test_signup_rejects_invalid_role(self):
+        response = self.client.post(reverse("signup"), {
+            "email": "invalid@example.com",
+            "role": "admin",
+            "password": self.password,
+            "password2": self.password,
+        })
 
-#         response = self.client.get(reverse('login'))
+        self.assertRedirects(
+            response, reverse("signup"),
+            fetch_redirect_response=False,
+        )
+        self.assertFalse(
+            User.objects.filter(email="invalid@example.com").exists()
+        )
 
-#         self.assertRedirects(response, reverse('jobs'))
+    def test_logout(self):
+        self.client.force_login(self.user)
 
-#     # ======================
-#     # SIGNUP TESTS
-#     # ======================
+        response = self.client.post(reverse("logout"))
 
-#     def test_user_can_signup(self):
-#         response = self.client.post(reverse('signup'), {
-#             'first_name': 'Ole',
-#             'last_name': 'Saina',
-#             'email': 'newuser@gmail.com',
-#             'password': 'newpassword123',
-#             'password2': 'newpassword123'
-#         })
-
-#         self.assertEqual(response.status_code, 302)
-#         self.assertTrue(User.objects.filter(email='newuser@gmail.com').exists())
-
-#     def test_signup_password_mismatch(self):
-#         response = self.client.post(reverse('signup'), {
-#             'first_name': 'Ole',
-#             'last_name': 'Saina',
-#             'email': 'failuser@gmail.com',
-#             'password': 'pass123',
-#             'password2': 'wrongpass'
-#         })
-
-#         self.assertEqual(response.status_code, 302)
-#         self.assertFalse(User.objects.filter(email='failuser@gmail.com').exists())
-
-#     def test_logged_in_user_cannot_access_signup(self):
-#         self.client.login(username=self.email, password=self.password)
-
-#         response = self.client.get(reverse('signup'))
-
-#         self.assertRedirects(response, reverse('jobs'))
-
-#     # ======================
-#     # LOGOUT TEST
-#     # ======================
-
-#     def test_user_can_logout(self):
-#         self.client.login(username=self.email, password=self.password)
-
-#         response = self.client.post(reverse('logout'))
-
-#         self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(
+            response, reverse("login"),
+            fetch_redirect_response=False,
+        )
+        self.assertNotIn("_auth_user_id", self.client.session)
